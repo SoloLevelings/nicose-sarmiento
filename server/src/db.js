@@ -199,7 +199,65 @@ export function initDb() {
       action     TEXT DEFAULT 'login',
       created_at TEXT DEFAULT (datetime('now'))
     );
+  `);
 
+  ensureColumn('users', 'status', "status TEXT DEFAULT 'Active'");
+  ensureColumn('users', 'alumni_id', 'alumni_id INTEGER DEFAULT 0');
+  ensureColumn('alumni', 'user_id', 'user_id INTEGER DEFAULT 0');
+  ensureColumn('alumni', 'education_school', "education_school TEXT DEFAULT ''");
+  ensureColumn('alumni', 'education_program', "education_program TEXT DEFAULT ''");
+  ensureColumn('alumni', 'education_status', "education_status TEXT DEFAULT ''");
+  ensureColumn('alumni', 'education_year', "education_year TEXT DEFAULT ''");
+  ensureColumn('transcript_requests', 'user_id', 'user_id INTEGER DEFAULT 0');
+  ensureColumn('transcript_requests', 'alumni_id', 'alumni_id INTEGER DEFAULT 0');
+  ensureColumn('transcript_requests', 'remarks', "remarks TEXT DEFAULT ''");
+  ensureColumn('reprints', 'user_id', 'user_id INTEGER DEFAULT 0');
+  ensureColumn('reprints', 'alumni_id', 'alumni_id INTEGER DEFAULT 0');
+  ensureColumn('reprints', 'remarks', "remarks TEXT DEFAULT ''");
+  ensureColumn('placements', 'alumni_id', 'alumni_id INTEGER DEFAULT 0');
+  ensureColumn('placements', 'user_id', 'user_id INTEGER DEFAULT 0');
+  ensureColumn('donations', 'user_id', 'user_id INTEGER DEFAULT 0');
+  ensureColumn('donations', 'alumni_id', 'alumni_id INTEGER DEFAULT 0');
+  ensureColumn('feedback', 'user_id', 'user_id INTEGER DEFAULT 0');
+  ensureColumn('feedback', 'alumni_id', 'alumni_id INTEGER DEFAULT 0');
+  ensureColumn('job_applications', 'user_id', 'user_id INTEGER DEFAULT 0');
+  ensureColumn('job_applications', 'alumni_id', 'alumni_id INTEGER DEFAULT 0');
+  ensureColumn('notifications', 'user_id', 'user_id INTEGER DEFAULT 0');
+  ensureColumn('notifications', 'alumni_id', 'alumni_id INTEGER DEFAULT 0');
+  ensureColumn('notifications', 'related_type', "related_type TEXT DEFAULT ''");
+  ensureColumn('notifications', 'related_id', "related_id TEXT DEFAULT ''");
+  ensureColumn('notifications', 'is_read', 'is_read INTEGER DEFAULT 0');
+  ensureColumn('notifications', 'read_at', "read_at TEXT DEFAULT ''");
+  ensureColumn('notifications', 'notification_type', "notification_type TEXT DEFAULT ''");
+  ensureColumn('notifications', 'target_url', "target_url TEXT DEFAULT ''");
+  ensureColumn('notifications', 'email_status', "email_status TEXT DEFAULT ''");
+  ensureColumn('notifications', 'sms_status', "sms_status TEXT DEFAULT ''");
+  ensureColumn('users', 'address', "address TEXT DEFAULT ''");
+  ensureColumn('alumni', 'email', "email TEXT DEFAULT ''");
+  ensureColumn('alumni', 'address', "address TEXT DEFAULT ''");
+  ensureColumn('announcements', 'audience', "audience TEXT DEFAULT 'alumni'");
+  ensureColumn('transcript_requests', 'fee_centavos', 'fee_centavos INTEGER DEFAULT 0');
+  ensureColumn('transcript_requests', 'payment_status', "payment_status TEXT DEFAULT ''");
+  ensureColumn('transcript_requests', 'copies', 'copies INTEGER DEFAULT 1');
+  ensureColumn('transcript_requests', 'claim_window', "claim_window TEXT DEFAULT ''");
+  ensureColumn('transcript_requests', 'claim_notes', "claim_notes TEXT DEFAULT ''");
+  ensureColumn('transcript_requests', 'approved_at', "approved_at TEXT DEFAULT ''");
+  ensureColumn('transcript_requests', 'processed_at', "processed_at TEXT DEFAULT ''");
+  ensureColumn('transcript_requests', 'released_at', "released_at TEXT DEFAULT ''");
+  ensureColumn('transcript_requests', 'cancelled_at', "cancelled_at TEXT DEFAULT ''");
+  ensureColumn('transcript_requests', 'correction_notes', "correction_notes TEXT DEFAULT ''");
+  ensureColumn('reprints', 'fee_centavos', 'fee_centavos INTEGER DEFAULT 0');
+  ensureColumn('reprints', 'payment_status', "payment_status TEXT DEFAULT ''");
+  ensureColumn('reprints', 'copies', 'copies INTEGER DEFAULT 1');
+  ensureColumn('reprints', 'claim_window', "claim_window TEXT DEFAULT ''");
+  ensureColumn('reprints', 'claim_notes', "claim_notes TEXT DEFAULT ''");
+  ensureColumn('reprints', 'approved_at', "approved_at TEXT DEFAULT ''");
+  ensureColumn('reprints', 'processed_at', "processed_at TEXT DEFAULT ''");
+  ensureColumn('reprints', 'released_at', "released_at TEXT DEFAULT ''");
+  ensureColumn('reprints', 'cancelled_at', "cancelled_at TEXT DEFAULT ''");
+  ensureColumn('reprints', 'correction_notes', "correction_notes TEXT DEFAULT ''");
+
+  db.exec(`
     CREATE TABLE IF NOT EXISTS request_history (
       id           INTEGER PRIMARY KEY AUTOINCREMENT,
       request_type TEXT DEFAULT '',
@@ -308,61 +366,7 @@ export function initDb() {
     CREATE INDEX IF NOT EXISTS idx_notifications_user_read ON notifications (user_id, is_read);
   `);
 
-  ensureColumn('users', 'status', "status TEXT DEFAULT 'Active'");
-  ensureColumn('users', 'alumni_id', 'alumni_id INTEGER DEFAULT 0');
-  ensureColumn('alumni', 'user_id', 'user_id INTEGER DEFAULT 0');
-  ensureColumn('alumni', 'education_school', "education_school TEXT DEFAULT ''");
-  ensureColumn('alumni', 'education_program', "education_program TEXT DEFAULT ''");
-  ensureColumn('alumni', 'education_status', "education_status TEXT DEFAULT ''");
-  ensureColumn('alumni', 'education_year', "education_year TEXT DEFAULT ''");
-  ensureColumn('transcript_requests', 'user_id', 'user_id INTEGER DEFAULT 0');
-  ensureColumn('transcript_requests', 'alumni_id', 'alumni_id INTEGER DEFAULT 0');
-  ensureColumn('transcript_requests', 'remarks', "remarks TEXT DEFAULT ''");
-  ensureColumn('reprints', 'user_id', 'user_id INTEGER DEFAULT 0');
-  ensureColumn('reprints', 'alumni_id', 'alumni_id INTEGER DEFAULT 0');
-  ensureColumn('reprints', 'remarks', "remarks TEXT DEFAULT ''");
-  ensureColumn('placements', 'alumni_id', 'alumni_id INTEGER DEFAULT 0');
-  ensureColumn('placements', 'user_id', 'user_id INTEGER DEFAULT 0');
-  ensureColumn('donations', 'user_id', 'user_id INTEGER DEFAULT 0');
-  ensureColumn('donations', 'alumni_id', 'alumni_id INTEGER DEFAULT 0');
-  ensureColumn('feedback', 'user_id', 'user_id INTEGER DEFAULT 0');
-  ensureColumn('feedback', 'alumni_id', 'alumni_id INTEGER DEFAULT 0');
-  ensureColumn('job_applications', 'user_id', 'user_id INTEGER DEFAULT 0');
-  ensureColumn('job_applications', 'alumni_id', 'alumni_id INTEGER DEFAULT 0');
-  ensureColumn('notifications', 'user_id', 'user_id INTEGER DEFAULT 0');
-  ensureColumn('notifications', 'alumni_id', 'alumni_id INTEGER DEFAULT 0');
-  ensureColumn('notifications', 'related_type', "related_type TEXT DEFAULT ''");
-  ensureColumn('notifications', 'related_id', "related_id TEXT DEFAULT ''");
-  ensureColumn('notifications', 'is_read', 'is_read INTEGER DEFAULT 0');
-  ensureColumn('notifications', 'read_at', "read_at TEXT DEFAULT ''");
-  ensureColumn('notifications', 'notification_type', "notification_type TEXT DEFAULT ''");
-  ensureColumn('notifications', 'target_url', "target_url TEXT DEFAULT ''");
-  ensureColumn('notifications', 'email_status', "email_status TEXT DEFAULT ''");
-  ensureColumn('notifications', 'sms_status', "sms_status TEXT DEFAULT ''");
-  ensureColumn('users', 'address', "address TEXT DEFAULT ''");
-  ensureColumn('alumni', 'email', "email TEXT DEFAULT ''");
-  ensureColumn('alumni', 'address', "address TEXT DEFAULT ''");
-  ensureColumn('announcements', 'audience', "audience TEXT DEFAULT 'alumni'");
-  ensureColumn('transcript_requests', 'fee_centavos', 'fee_centavos INTEGER DEFAULT 0');
-  ensureColumn('transcript_requests', 'payment_status', "payment_status TEXT DEFAULT ''");
-  ensureColumn('transcript_requests', 'copies', 'copies INTEGER DEFAULT 1');
-  ensureColumn('transcript_requests', 'claim_window', "claim_window TEXT DEFAULT ''");
-  ensureColumn('transcript_requests', 'claim_notes', "claim_notes TEXT DEFAULT ''");
-  ensureColumn('transcript_requests', 'approved_at', "approved_at TEXT DEFAULT ''");
-  ensureColumn('transcript_requests', 'processed_at', "processed_at TEXT DEFAULT ''");
-  ensureColumn('transcript_requests', 'released_at', "released_at TEXT DEFAULT ''");
-  ensureColumn('transcript_requests', 'cancelled_at', "cancelled_at TEXT DEFAULT ''");
-  ensureColumn('transcript_requests', 'correction_notes', "correction_notes TEXT DEFAULT ''");
-  ensureColumn('reprints', 'fee_centavos', 'fee_centavos INTEGER DEFAULT 0');
-  ensureColumn('reprints', 'payment_status', "payment_status TEXT DEFAULT ''");
-  ensureColumn('reprints', 'copies', 'copies INTEGER DEFAULT 1');
-  ensureColumn('reprints', 'claim_window', "claim_window TEXT DEFAULT ''");
-  ensureColumn('reprints', 'claim_notes', "claim_notes TEXT DEFAULT ''");
-  ensureColumn('reprints', 'approved_at', "approved_at TEXT DEFAULT ''");
-  ensureColumn('reprints', 'processed_at', "processed_at TEXT DEFAULT ''");
-  ensureColumn('reprints', 'released_at', "released_at TEXT DEFAULT ''");
-  ensureColumn('reprints', 'cancelled_at', "cancelled_at TEXT DEFAULT ''");
-  ensureColumn('reprints', 'correction_notes', "correction_notes TEXT DEFAULT ''");
+  /* `payments` is created by the block above, so its columns are migrated only now. */
   ensureColumn('payments', 'qr_image', "qr_image TEXT DEFAULT ''");
   ensureColumn('payments', 'qr_expires_at', "qr_expires_at TEXT DEFAULT ''");
   ensureColumn('payments', 'gateway_method_id', "gateway_method_id TEXT DEFAULT ''");
@@ -468,18 +472,6 @@ export function writeAudit(user, action, entity, entityId, detail) {
   }
 }
 
-export function writeLoginLog(user, action) {
-  try {
-    db.prepare('INSERT INTO login_logs (user_id, username, action) VALUES (?, ?, ?)').run(
-      user?.id || 0,
-      user?.username || '',
-      action || 'login'
-    );
-  } catch {
-    /* Login logging must never block authentication. */
-  }
-}
-
 /* ------------------------------------------------------------------ *
  * System users only. No fake alumni / events / requests are inserted.
  * ------------------------------------------------------------------ */
@@ -580,10 +572,6 @@ function linkOrphanAlumniAccounts() {
   }
 }
 
-function clearLegacyDemoRecords() {
-  // No-op: Legacy demo data cleanup
-}
-
 function targetUrlFor(relatedType, relatedId, paid) {
   const id = relatedId == null || relatedId === '' ? '' : String(relatedId);
   const type = String(relatedType || '').toLowerCase();
@@ -597,4 +585,118 @@ function targetUrlFor(relatedType, relatedId, paid) {
   if (type === 'application') return '/#/applications';
   if (type === 'system') return '/#/settings';
   return '/#/notifications';
+}
+
+export function notifyUser({
+  userId, alumniId, recipient, channel, subject, message, relatedType, relatedId,
+  notificationType, targetUrl, paid
+}) {
+  try {
+    const type = notificationType || relatedType || channel || 'system';
+    const url = targetUrl || targetUrlFor(relatedType, relatedId, paid);
+    const info = db.prepare(
+      `INSERT INTO notifications (
+         channel, recipient, subject, message, user_id, alumni_id, related_type, related_id,
+         is_read, notification_type, target_url
+       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?)`
+    ).run(
+      channel || 'SYSTEM',
+      recipient || '',
+      subject || '',
+      message || '',
+      userId || 0,
+      alumniId || 0,
+      relatedType || '',
+      String(relatedId || ''),
+      type,
+      url
+    );
+    return db.prepare('SELECT * FROM notifications WHERE id = ?').get(info.lastInsertRowid);
+  } catch {
+    return null;
+  }
+}
+
+export function notifyAlumniAudience(subject, message, relatedType, relatedId, extras = {}) {
+  const alumniUsers = db.prepare("SELECT * FROM users WHERE role = 'alumni' AND (status IS NULL OR status = 'Active')").all();
+  for (const row of alumniUsers) {
+    notifyUser({
+      userId: row.id,
+      alumniId: row.alumni_id || 0,
+      recipient: row.email || row.name,
+      channel: extras.channel || 'SYSTEM',
+      subject,
+      message,
+      relatedType,
+      relatedId,
+      notificationType: extras.notificationType || relatedType
+    });
+  }
+  return alumniUsers;
+}
+
+export function notifyStaffAudience(subject, message, relatedType, relatedId, extras = {}) {
+  const staffUsers = db.prepare(
+    "SELECT * FROM users WHERE role IN ('admin','staff','registrar') AND (status IS NULL OR status = 'Active')"
+  ).all();
+  for (const row of staffUsers) {
+    notifyUser({
+      userId: row.id,
+      alumniId: 0,
+      recipient: row.email || row.name,
+      channel: extras.channel || 'SYSTEM',
+      subject,
+      message,
+      relatedType,
+      relatedId,
+      notificationType: extras.notificationType || relatedType
+    });
+  }
+  return staffUsers;
+}
+
+export function writeRequestHistory(user, requestType, requestId, action, remarks) {
+  try {
+    db.prepare(
+      `INSERT INTO request_history (request_type, request_id, actor_id, actor_role, action, remarks)
+       VALUES (?, ?, ?, ?, ?, ?)`
+    ).run(requestType, requestId, user?.id || 0, user?.role || '', action || '', remarks || '');
+  } catch { /* history must never break the request */ }
+}
+
+export function writeLoginLog(user, action) {
+  try {
+    db.prepare('INSERT INTO login_logs (user_id, username, action) VALUES (?, ?, ?)').run(
+      user?.id || 0, user?.username || '', action || 'login'
+    );
+  } catch { /* never block auth */ }
+}
+
+export function getSetting(key, fallback) {
+  const row = db.prepare('SELECT value FROM app_meta WHERE key = ?').get(key);
+  if (!row) return fallback;
+  try { return JSON.parse(row.value); } catch { return row.value; }
+}
+
+export function setSetting(key, value) {
+  db.prepare('INSERT OR REPLACE INTO app_meta (key, value) VALUES (?, ?)').run(
+    key, typeof value === 'string' ? value : JSON.stringify(value)
+  );
+}
+
+function clearLegacyDemoRecords() {
+  if (String(process.env.KEEP_DEMO_DATA || '').toLowerCase() === 'true') return;
+  const flag = db.prepare('SELECT value FROM app_meta WHERE key = ?').get('demo_cleared');
+  if (flag && flag.value === '1') return;
+
+  const tables = [
+    'alumni', 'transcript_requests', 'reprints', 'placements', 'events',
+    'reunions', 'donations', 'newsletters', 'feedback', 'notifications',
+    'academic_records', 'job_opportunities', 'job_applications', 'announcements'
+  ];
+  for (const table of tables) {
+    db.exec(`DELETE FROM ${table}`);
+  }
+  db.prepare('INSERT OR REPLACE INTO app_meta (key, value) VALUES (?, ?)').run('demo_cleared', '1');
+  console.log('[db] Removed previously seeded demo records. Tables are empty for real data entry.');
 }
