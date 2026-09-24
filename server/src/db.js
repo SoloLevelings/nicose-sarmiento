@@ -468,6 +468,18 @@ export function writeAudit(user, action, entity, entityId, detail) {
   }
 }
 
+export function writeLoginLog(user, action) {
+  try {
+    db.prepare('INSERT INTO login_logs (user_id, username, action) VALUES (?, ?, ?)').run(
+      user?.id || 0,
+      user?.username || '',
+      action || 'login'
+    );
+  } catch {
+    /* Login logging must never block authentication. */
+  }
+}
+
 /* ------------------------------------------------------------------ *
  * System users only. No fake alumni / events / requests are inserted.
  * ------------------------------------------------------------------ */
@@ -586,4 +598,3 @@ function targetUrlFor(relatedType, relatedId, paid) {
   if (type === 'system') return '/#/settings';
   return '/#/notifications';
 }
-
