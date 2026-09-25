@@ -40,6 +40,24 @@ export function initDb() {
       created_at TEXT DEFAULT (datetime('now'))
     );
 
+    CREATE TABLE IF NOT EXISTS password_reset_tokens (
+      token_hash TEXT PRIMARY KEY,
+      user_id INTEGER NOT NULL,
+      expires_at TEXT NOT NULL,
+      used_at TEXT DEFAULT NULL,
+      created_at TEXT DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS password_reset_otps (
+      otp_hash TEXT PRIMARY KEY,
+      user_id INTEGER NOT NULL,
+      channel TEXT NOT NULL,
+      destination TEXT NOT NULL,
+      expires_at TEXT NOT NULL,
+      used_at TEXT DEFAULT NULL,
+      created_at TEXT DEFAULT (datetime('now'))
+    );
+
     CREATE TABLE IF NOT EXISTS alumni (
       id           INTEGER PRIMARY KEY AUTOINCREMENT,
       name         TEXT NOT NULL,
@@ -446,6 +464,10 @@ export function createSession(userId) {
 
 export function destroySession(token) {
   db.prepare('DELETE FROM sessions WHERE token = ?').run(token);
+}
+
+export function destroyUserSessions(userId) {
+  db.prepare('DELETE FROM sessions WHERE user_id = ?').run(userId);
 }
 
 export function findByToken(token) {
